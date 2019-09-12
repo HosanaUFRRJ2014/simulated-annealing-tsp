@@ -1,5 +1,11 @@
 import math
 import random
+from threading import (
+    Lock
+)
+from concurrent.futures import (
+    ThreadPoolExecutor
+)
 import visualize_tsp
 import matplotlib.pyplot as plt
 
@@ -86,18 +92,22 @@ class SimAnneal(object):
         """
         # Initialize with the greedy solution.
         self.cur_solution, self.cur_fitness = self.initial_solution()
-
+        lock = Lock()
         print("Starting annealing.")
-        while self.T >= self.stopping_temperature and self.iteration < self.stopping_iter:
-            candidate = list(self.cur_solution)
-            l = random.randint(2, self.N - 1)
-            i = random.randint(0, self.N - l)
-            candidate[i : (i + l)] = reversed(candidate[i : (i + l)])
-            self.accept(candidate)
-            self.T *= self.alpha
-            self.iteration += 1
-
-            self.fitness_list.append(self.cur_fitness)
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            while self.T >= self.stopping_temperature and self.iteration < self.stopping_iter:
+                candidate = list(self.cur_solution)
+                l = random.randint(2, self.N - 1)
+                i = random.randint(0, self.N - l)
+                candidate[i : (i + l)] = reversed(candidate[i : (i + l)])
+                # start critical section
+                lock.acquire()
+                self.accept(candidate)
+                self.T *= self.alpha
+                self.iteration += 1
+                self.fitness_list.append(self.cur_fitness)
+                # leave critical section
+                lock.release()
 
         print("Best fitness obtained: ", self.best_fitness)
         improvement = 100 * (self.fitness_list[0] - self.best_fitness) / (self.fitness_list[0])
@@ -105,7 +115,8 @@ class SimAnneal(object):
 
     def batch_anneal(self, times=10):
         """
-        Execute simulated annealing algorithm `times` times, with random initial solutions.
+        Execute simulated annealing algorithm `times` times,
+        with random initial solutions.
         """
         for i in range(1, times + 1):
             print(f"Iteration {i}/{times} -------------------------------")
