@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import random
 
 coords = []
+# TODO: Gerar vários arquivos grandes com coordenadas e colocar para ler em 
+# paralelo. Pelo o que sabemos do GIL (Global Interpreter Locker), vai ficar
+# mais rápido. (https://docs.python.org/3/glossary.html#term-global-interpreter-lock)
 with open("coord.txt", "r") as f:
     for line in f.readlines():
         line = [float(x.replace("\n", "")) for x in line.split(" ")]

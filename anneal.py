@@ -8,6 +8,7 @@ from concurrent.futures import (
 )
 import visualize_tsp
 import matplotlib.pyplot as plt
+import threading
 
 
 class SimAnneal(object):
@@ -92,9 +93,11 @@ class SimAnneal(object):
         """
         # Initialize with the greedy solution.
         self.cur_solution, self.cur_fitness = self.initial_solution()
-        lock = Lock()
         print("Starting annealing.")
-        with ThreadPoolExecutor(max_workers=4) as executor:
+        lock = Lock()
+
+        def funcao():
+            # print("Threads comecando execucao {}".format(threading.current_thread()))
             while self.T >= self.stopping_temperature and self.iteration < self.stopping_iter:
                 candidate = list(self.cur_solution)
                 l = random.randint(2, self.N - 1)
@@ -108,6 +111,10 @@ class SimAnneal(object):
                 self.fitness_list.append(self.cur_fitness)
                 # leave critical section
                 lock.release()
+            print("Task Executed {}".format(threading.current_thread()))
+
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            future = executor.submit(funcao)
 
         print("Best fitness obtained: ", self.best_fitness)
         improvement = 100 * (self.fitness_list[0] - self.best_fitness) / (self.fitness_list[0])
