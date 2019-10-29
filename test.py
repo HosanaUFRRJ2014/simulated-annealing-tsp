@@ -1,7 +1,7 @@
 from anneal import SimAnneal
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import random
-
+# TODO: Renomear esse arquivo para main.py
 coords = []
 with open("coord.txt", "r") as f:
     for line in f.readlines():
@@ -12,5 +12,6 @@ if __name__ == "__main__":
     # coords = [[random.uniform(-1000, 1000), random.uniform(-1000, 1000)] for i in range(100)]
     sa = SimAnneal(coords, stopping_iter=5000)
     sa.anneal()
-    sa.visualize_routes()
-    sa.plot_learning()
+    # Commented for speedup tests
+    # sa.visualize_routes()
+    # sa.plot_learning()
