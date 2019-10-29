@@ -1,7 +1,7 @@
 import math
 import random
-import visualize_tsp
-import matplotlib.pyplot as plt
+# import visualize_tsp
+# import matplotlib.pyplot as plt
 
 
 class SimAnneal(object):
@@ -114,17 +114,17 @@ class SimAnneal(object):
             self.cur_solution, self.cur_fitness = self.initial_solution()
             self.anneal()
 
-    def visualize_routes(self):
-        """
-        Visualize the TSP route with matplotlib.
-        """
-        visualize_tsp.plotTSP([self.best_solution], self.coords)
+    # def visualize_routes(self):
+    #     """
+    #     Visualize the TSP route with matplotlib.
+    #     """
+    #     visualize_tsp.plotTSP([self.best_solution], self.coords)
 
-    def plot_learning(self):
-        """
-        Plot the fitness through iterations.
-        """
-        plt.plot([i for i in range(len(self.fitness_list))], self.fitness_list)
-        plt.ylabel("Fitness")
-        plt.xlabel("Iteration")
-        plt.show()
+    # def plot_learning(self):
+    #     """
+    #     Plot the fitness through iterations.
+    #     """
+    #     plt.plot([i for i in range(len(self.fitness_list))], self.fitness_list)
+    #     plt.ylabel("Fitness")
+    #     plt.xlabel("Iteration")
+    #     plt.show()
