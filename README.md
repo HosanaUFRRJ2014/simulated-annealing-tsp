@@ -24,3 +24,8 @@ The fitness (objective value) through iterations.
 [Kirkpatrick et al. 1983: "Optimization by Simulated Annealing"](http://leonidzhukov.net/hse/2013/stochmod/papers/KirkpatrickGelattVecchi83.pdf)
 
 http://www.blog.pyoung.net/2013/07/26/visualizing-the-traveling-salesman-problem-using-matplotlib-in-python/
+
+
+# Para compilar em Pythran:
+Compila a função de anneal:
+pythran -Ofast -march=native anneal_pythran.py

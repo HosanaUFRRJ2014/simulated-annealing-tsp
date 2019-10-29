@@ -1,2 +1,2 @@
-matplotlib>=2.2.4
-cython>=0.29.13
+matplotlib==3.1.1
+pythran==0.9.3.post1
